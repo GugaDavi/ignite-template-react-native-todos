@@ -1,23 +1,41 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
 
-import { Header } from '../components/Header';
-import { Task, TasksList } from '../components/TasksList';
-import { TodoInput } from '../components/TodoInput';
+import { Header } from "../components/Header";
+import { Task, TasksList } from "../components/TasksList";
+import { TodoInput } from "../components/TodoInput";
 
 export function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   function handleAddTask(newTaskTitle: string) {
-    //TODO - add new task
+    const newTask: Task = {
+      title: newTaskTitle,
+      done: false,
+      id: new Date().getTime(),
+    };
+
+    setTasks([...tasks, newTask]);
   }
 
   function handleToggleTaskDone(id: number) {
-    //TODO - toggle task done if exists
+    let _tasks = [...tasks];
+
+    _tasks = _tasks.map((item) => {
+      if (item.id === id) item.done = !item.done;
+
+      return item;
+    });
+
+    setTasks([..._tasks]);
   }
 
   function handleRemoveTask(id: number) {
-    //TODO - remove task from state
+    let _tasks = [...tasks];
+
+    _tasks = _tasks.filter((item) => item.id !== id);
+
+    setTasks([..._tasks]);
   }
 
   return (
@@ -26,18 +44,18 @@ export function Home() {
 
       <TodoInput addTask={handleAddTask} />
 
-      <TasksList 
-        tasks={tasks} 
+      <TasksList
+        tasks={tasks}
         toggleTaskDone={handleToggleTaskDone}
-        removeTask={handleRemoveTask} 
+        removeTask={handleRemoveTask}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EBEBEB'
-  }
-})
+    backgroundColor: "#EBEBEB",
+  },
+});
